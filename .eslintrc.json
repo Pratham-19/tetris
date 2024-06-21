@@ -1,0 +1,4 @@
+{
+  "plugins": ["tailwindcss"],
+  "extends": ["universe/web", "next/core-web-vitals", "plugin:tailwindcss/recommended"]
+}
