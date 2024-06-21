@@ -31,5 +31,9 @@
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
+  },
+  "lint-staged": {
+    "**/*.(ts|tsx)": "bash -c 'pnpm tsc --noEmit'",
+    "**/*.(ts|tsx|js)": "eslint --fix"
   }
 }
