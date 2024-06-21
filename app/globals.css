@@ -23,3 +23,14 @@
     background-color: #ffb802;
     background-blend-mode: multiply;
 }
+
+.tetromino .Sparkle {
+    position: absolute;
+    z-index: 10;
+    width: 6px;
+    height: 6px;
+    left: -2px;
+    top: -2px;
+    background-color: rgba(255, 255, 255, 0.4);
+    border-radius: 4px 4px;
+}

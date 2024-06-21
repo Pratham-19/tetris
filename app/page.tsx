@@ -1,4 +1,6 @@
 'use client'
+import { LogOut } from 'lucide-react'
+
 import { GameSound } from '@/components/GameComponents'
 import { Game } from '@/components/Pages'
 import { useReset } from '@/hooks'
@@ -8,13 +10,21 @@ export default function Home() {
         rows: 20,
         cols: 10,
     }
-    const { gameOver, setGameOver, resetGame } = useReset()
-    console.log(gameOver)
+    const { gameOver, resetGame, setGameOver } = useReset()
 
     return (
         <main className="relative flex h-screen w-screen items-center justify-center ">
-            <div className="absolute right-5 top-5">
+            <div className="absolute right-5 top-5 flex items-center justify-center gap-3 ">
                 <GameSound />
+                {!gameOver && (
+                    <button
+                        className="cursor-pointer"
+                        onClick={() => {
+                            setGameOver(true)
+                        }}>
+                        <LogOut size={22} />
+                    </button>
+                )}
             </div>
             {gameOver ? (
                 <div className="flex flex-col items-center justify-center rounded-xl border-2 border-b-4 border-r-4 border-black bg-white p-9">
@@ -26,7 +36,7 @@ export default function Home() {
                     </button>
                 </div>
             ) : (
-                <Game />
+                <Game rows={game.rows} cols={game.cols} setGameOver={setGameOver} />
             )}
         </main>
     )

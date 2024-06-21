@@ -17,8 +17,8 @@ export default function GameSound() {
     }
 
     return (
-        <div>
-            <button onClick={handleAudio}>{isPlaying ? <Volume2 /> : <VolumeX />}</button>
+        <div className="flex items-center justify-center">
+            <button onClick={handleAudio}>{isPlaying ? <Volume2 size={24} /> : <VolumeX size={24} />}</button>
             <audio src="/audio/bg-audio.mp3" loop ref={audioRef} />
         </div>
     )
