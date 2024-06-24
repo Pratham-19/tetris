@@ -7,8 +7,8 @@ import { useReset } from '@/hooks'
 
 export default function Home() {
     const game: Record<string, number> = {
-        rows: 20,
-        cols: 10,
+        rows: 25,
+        cols: 15,
     }
     const { gameOver, resetGame, setGameOver } = useReset()
 

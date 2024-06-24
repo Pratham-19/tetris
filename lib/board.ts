@@ -1,3 +1,5 @@
+import { IBoard, IPlayer } from '@/types/Game'
+
 import { defaultCell } from './cell'
 
 export const buildBoard = ({ rows, cols }: { rows: number; cols: number }) => {
@@ -93,3 +95,150 @@ export const buildBoard = ({ rows, cols }: { rows: number; cols: number }) => {
 //         size: { ...board.size },
 //     }
 // }
+
+export const transferToBoard = ({
+    color,
+    isOccupied,
+    position,
+    rows,
+    shape,
+}: {
+    color: string
+    isOccupied: boolean
+    position: { row: number; column: number }
+    rows: any
+    shape: number[][]
+}) => {
+    shape.forEach((row, y) => {
+        row.forEach((cell, x) => {
+            if (cell) {
+                const occupied = isOccupied
+                const _y = y + position.row
+                const _x = x + position.column
+                rows[_y][_x] = { occupied, color }
+            }
+        })
+    })
+
+    return rows
+}
+
+export const nextBoard = ({
+    board,
+    player,
+    resetPlayer,
+    addLinesCleared,
+}: {
+    board: IBoard
+    player: IPlayer
+    resetPlayer: () => void
+    addLinesCleared?: any
+}): IBoard => {
+    const { tetromino, position } = player
+
+    let rows = board.rows.map((row) => row.map((cell) => (cell.occupied ? cell : { ...defaultCell })))
+
+    // // Drop position
+    // const dropPosition = findDropPosition({
+    //     board,
+    //     position,
+    //     shape: tetromino.shape,
+    // })
+
+    // // Place ghost
+    // const className = `${tetromino.className} ${player.isFastDropping ? '' : 'ghost'}`
+    // rows = transferToBoard({
+    //     className,
+    //     isOccupied: player.isFastDropping,
+    //     position: dropPosition,
+    //     rows,
+    //     shape: tetromino.shape,
+    // })
+
+    // Place the piece.
+    // If it collided, mark the board cells as collided
+    // if (!player.isFastDropping) {
+    rows = transferToBoard({
+        color: tetromino.color,
+        isOccupied: player.collided,
+        position,
+        rows,
+        shape: tetromino.shape,
+    })
+    // }
+
+    const blankRow = rows[0].map((_) => ({ ...defaultCell }))
+    let linesCleared = 0
+    rows = rows.reduce<{ occupied: boolean; color: string }[][]>((acc, row) => {
+        if (row.every((column) => column.occupied)) {
+            linesCleared++
+            acc.unshift([...blankRow])
+        } else {
+            acc.push(row)
+        }
+        return acc
+    }, [])
+
+    if (linesCleared > 0) {
+        addLinesCleared(linesCleared)
+    }
+
+    if (player.collided || player.isFastDropping) {
+        resetPlayer()
+    }
+    return {
+        rows,
+        size: { ...board.size },
+    }
+}
+
+export const hasCollision = ({
+    board,
+    position,
+    shape,
+}: {
+    board: IBoard
+    position: { row: number; column: number }
+    shape: number[][]
+}) => {
+    for (let y = 0; y < shape.length; y++) {
+        const row = y + position.row
+
+        for (let x = 0; x < shape[y].length; x++) {
+            if (shape[y][x]) {
+                const column = x + position.column
+
+                if (board.rows[row] && board.rows[row][column] && board.rows[row][column].occupied) {
+                    return true
+                }
+            }
+        }
+    }
+
+    return false
+}
+
+export const isWithinBoard = ({
+    board,
+    position,
+    shape,
+}: {
+    board: IBoard
+    position: { row: number; column: number }
+    shape: number[][]
+}): boolean => {
+    for (let y = 0; y < shape.length; y++) {
+        const row = y + position.row
+
+        for (let x = 0; x < shape[y].length; x++) {
+            if (shape[y][x]) {
+                const column = x + position.column
+                const isValidPosition = board.rows[row] && board.rows[row][column]
+
+                if (!isValidPosition) return false
+            }
+        }
+    }
+
+    return true
+}

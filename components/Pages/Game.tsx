@@ -1,7 +1,9 @@
 'use client'
 
 import { Board, Controller } from '@/components/GameComponents'
-import { useBoard } from '@/hooks/useBoard'
+import { useBoard } from '@/hooks'
+import { useGameStats } from '@/store/gameStats'
+import { usePlayer } from '@/store/player'
 
 export default function Game({
     rows,
@@ -12,37 +14,20 @@ export default function Game({
     cols: number
     setGameOver: React.Dispatch<React.SetStateAction<boolean>>
 }) {
+    const { player, setPlayer, resetPlayer } = usePlayer()
+    const { gameStats, addLinesCleared } = useGameStats()
+
     const [board] = useBoard({
         rows,
         cols,
+        player,
+        resetPlayer,
+        addLinesCleared,
     })
     return (
-        <div className="relative">
-            <Board board={board} />
-            <Controller setGameOver={setGameOver} />
+        <div className="relative w-[85vw] space-y-3">
+            <Board board={board} gameStats={gameStats} player={player} />
+            <Controller setGameOver={setGameOver} player={player} setPlayer={setPlayer} board={board} />
         </div>
     )
 }
-
-//   const [gameStats, addLinesCleared] = useGameStats();
-//   const [player, setPlayer, resetPlayer] = usePlayer();
-//   const [board, setBoard] = useBoard({
-//     rows,
-//     columns,
-//     player,
-//     resetPlayer,
-//     addLinesCleared
-//   });
-
-//   return (
-// <div className="Tetris">
-//   <Board board={board} />
-//   <GameStats gameStats={gameStats} />
-//   <Previews tetrominoes={player.tetrominoes} />
-//   <GameController
-//     board={board}
-//     gameStats={gameStats}
-//     player={player}
-//     setGameOver={setGameOver}
-//     setPlayer={setPlayer}
-//   />

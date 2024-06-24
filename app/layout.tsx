@@ -1,10 +1,10 @@
 import { Metadata } from 'next'
-import { Lexend_Mega } from 'next/font/google'
+import { Lexend } from 'next/font/google'
 
 import './globals.css'
 import { cn } from '@/lib/utils'
 
-const inter = Lexend_Mega({ subsets: ['latin'] })
+const inter = Lexend({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
     title: 'Create Next App',

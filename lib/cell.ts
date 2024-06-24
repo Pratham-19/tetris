@@ -1,4 +1,7 @@
-export const defaultCell = {
+export const defaultCell: {
+    occupied: boolean
+    color: string
+} = {
     occupied: false,
-    className: '',
+    color: '',
 }
