@@ -39,3 +39,14 @@ export const usePlayer = create<PlayerStore>((set) => ({
         })),
     resetPlayerGame: () => set({ player: buildPlayer() }),
 }))
+interface SoundStore {
+    isPlaying: boolean
+    startPlaying: () => void
+    stopPlaying: () => void
+}
+
+export const useSound = create<SoundStore>((set) => ({
+    isPlaying: false,
+    startPlaying: () => set((state) => ({ isPlaying: true })),
+    stopPlaying: () => set((state) => ({ isPlaying: false })),
+}))

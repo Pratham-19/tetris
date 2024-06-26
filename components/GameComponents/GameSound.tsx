@@ -1,24 +1,31 @@
+'use client'
 import { VolumeX, Volume2 } from 'lucide-react'
-import { useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
+
+import { useSound } from '@/store/player'
 
 export default function GameSound() {
-    const [isPlaying, setIsPlaying] = useState(false)
+    const { isPlaying, startPlaying, stopPlaying } = useSound()
+
     const audioRef = useRef<HTMLAudioElement>(null)
-    const handleAudio = () => {
-        if (audioRef.current) {
-            if (isPlaying) {
-                audioRef.current.pause()
-                setIsPlaying(false)
-            } else {
-                audioRef.current.play()
-                setIsPlaying(true)
-            }
+
+    useEffect(() => {
+        if (!audioRef.current) return
+        if (isPlaying) {
+            audioRef.current.play()
+        } else {
+            audioRef.current.pause()
         }
-    }
+    }, [isPlaying, audioRef])
 
     return (
         <div className="flex items-center justify-center">
-            <button onClick={handleAudio}>{isPlaying ? <Volume2 size={24} /> : <VolumeX size={24} />}</button>
+            <button
+                onClick={() => {
+                    isPlaying ? stopPlaying() : startPlaying()
+                }}>
+                {isPlaying ? <Volume2 size={24} /> : <VolumeX size={24} />}
+            </button>
             <audio src="/audio/bg-audio.mp3" loop ref={audioRef} />
         </div>
     )

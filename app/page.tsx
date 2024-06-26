@@ -2,8 +2,9 @@
 import { LogOut } from 'lucide-react'
 
 import { GameSound } from '@/components/GameComponents'
-import { Game } from '@/components/Pages'
+import { Game, SplashScreen } from '@/components/Pages'
 import { useReset } from '@/hooks'
+import useTelegramInitData from '@/hooks/useTelegramInitData'
 
 export default function Home() {
     const game: Record<string, number> = {
@@ -11,6 +12,12 @@ export default function Home() {
         cols: 15,
     }
     const { gameOver, resetGame, setGameOver } = useReset()
+
+    const data = useTelegramInitData()
+
+    if (!data?.query_id) {
+        return <SplashScreen />
+    }
 
     return (
         <main className="relative flex h-screen w-screen items-center justify-center ">

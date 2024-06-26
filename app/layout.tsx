@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Lexend } from 'next/font/google'
 
 import './globals.css'
+import FooterMenu from '@/components/Footer'
 import { cn } from '@/lib/utils'
 
 const inter = Lexend({ subsets: ['latin'] })
@@ -37,7 +38,11 @@ export default function RootLayout({
             <head>
                 <script async src="https://telegram.org/js/telegram-web-app.js" />
             </head>
-            <body className={cn(inter.className, 'min-h-screen grainy antialiased')}>{children}</body>
+            <body className={cn(inter.className, 'min-h-screen grainy antialiased')}>
+                {children}
+
+                <FooterMenu />
+            </body>
         </html>
     )
 }

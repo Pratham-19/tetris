@@ -1,7 +1,6 @@
 import { create } from 'zustand'
 
-import { getRandomTetrics } from '@/lib/tetrics'
-import { IPlayer, Tetrino, IGameStats } from '@/types/Game'
+import { IGameStats } from '@/types/Game'
 
 interface GameStatsStore {
     gameStats: IGameStats
